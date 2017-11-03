@@ -9,6 +9,16 @@
 			} :
 			fun;
 	};
+	window.onResize = function (fun) {
+		if(!fun || fun && !(fun instanceof Function)){return false;}
+		var defaults = window.onresize;
+		window.onresize = defaults ? 
+						function (e) {
+							defaults(e);
+							fun(e);
+						}:
+						fun;
+	}
 	function defineRem(maxW) {
 		/*
 		 clientW >= maxW 时  1rem = 100px , 小于等于时 1rem = 100 * clientW/maxW;
@@ -37,9 +47,9 @@
 	 init
 	 * */
 	defineRem();
-	window.onresize = function(e){
+	onResize(function(e){
 		defineRem();
-	};
+	});
 	//如果是测试连接，显示刷新按钮
 	if(location.host == '192.168.1.188'&&document.getElementById('flexRefreshBtn')){
 		document.getElementById('flexRefreshBtn').style.display = 'block';
